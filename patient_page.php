@@ -2,7 +2,7 @@
 session_start();
 include 'db_connection.php';
 
-// معالجة طلب الحذف عبر AJAX
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['appointmentId'])) {
     $appointmentId = $_POST['appointmentId'];
     $patientId = $_SESSION['user_id'];
@@ -21,10 +21,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['appointmentId'])) {
     echo json_encode($response);
     $stmt->close();
     $conn->close();
-    exit(); // نوقف التنفيذ بعد الرد
+    exit(); //
 }
 
-// تحقق من تسجيل الدخول
+
 if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] != 'patient') {
     header('Location: login.php');
     exit();
@@ -32,7 +32,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] != 'patient') {
 
 $patientId = $_SESSION['user_id'];
 
-// بيانات المريض
+
 $queryPatient = "SELECT firstName, lastName, emailAddress FROM patient WHERE id = ?";
 $stmtPatient = $conn->prepare($queryPatient);
 $stmtPatient->bind_param("s", $patientId);
@@ -41,7 +41,7 @@ $stmtPatient->store_result();
 $stmtPatient->bind_result($firstName, $lastName, $emailAddress);
 $stmtPatient->fetch();
 
-// المواعيد
+
 $queryAppointments = "SELECT appointment.date AS appointmentDate, appointment.time AS appointmentTime, 
                              doctor.firstName AS doctorFirstName, doctor.lastName AS doctorLastName, 
                              doctor.uniqueFileName AS doctorPhoto, appointment.status, appointment.id
